@@ -34,12 +34,13 @@ func init() {
     "version": "1.0",
     "x-direktiv-meta": {
       "categories": [
-        "unknown"
+        "build",
+        "development"
       ],
       "container": "gcr.io/direktiv/apps/python",
       "issues": "https://github.com/direktiv-apps/python/issues",
       "license": "[Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0)",
-      "long-description": "This function provides a Python environment with Pyenv installed. Other versions can be installed with ` + "`" + `pyenv install 3.x.y` + "`" + `. The following versions are installed:\n- 3.10.5\n- 3.9.13\n- 3.8.13\nYou can change the python version by running the command ` + "`" + `pyenv local 3.x.y` + "`" + ` in the working directory. \nThis image is based on the image [cimg/python](https://hub.docker.com/r/cimg/python) from DockerHub. It includes pip, pipenv, and poetry.",
+      "long-description": "This function provides a Python environment with Pyenv installed. Other versions can be installed with ` + "`" + `pyenv install 3.x.y` + "`" + `. The following versions are installed:\n- 3.10.5\n- 3.9.13\n- 3.8.13\n\nYou can change the python version by running the command ` + "`" + `pyenv local 3.x.y` + "`" + ` in the working directory. The image also contains pip, pipenv, and poetry.",
       "maintainer": "[direktiv.io](https://www.direktiv.io) ",
       "url": "https://github.com/direktiv-apps/python"
     }
@@ -159,7 +160,7 @@ func init() {
             "examples": {
               "python": [
                 {
-                  "result": null,
+                  "result": "Python 3.8.13",
                   "success": true
                 }
               ]
@@ -203,6 +204,14 @@ func init() {
           {
             "content": "- id: python\n  type: action\n  action:\n    function: python\n    input: \n      commands:\n      - command: python3 -c 'print(\"Hello World\")'",
             "title": "Basic"
+          },
+          {
+            "content": "- id: python\n  type: action\n  action:\n    function: python\n    input:\n      commands:\n      - command: python3 -c 'import os;print(os.environ[\"hello\"])'\n        envs: \n        - name: hello\n          value: world",
+            "title": "Environment Variables"
+          },
+          {
+            "content": "- id: python\n  type: action\n  action:\n    function: python\n    input:\n      commands:\n      - command: pyenv local 3.8.13\n      - command: python3 -V",
+            "title": "Switch version"
           }
         ],
         "x-direktiv-function": "functions:\n- id: python\n  image: gcr.io/direktiv/apps/python:1.0\n  type: knative-workflow"
@@ -271,12 +280,13 @@ func init() {
     "version": "1.0",
     "x-direktiv-meta": {
       "categories": [
-        "unknown"
+        "build",
+        "development"
       ],
       "container": "gcr.io/direktiv/apps/python",
       "issues": "https://github.com/direktiv-apps/python/issues",
       "license": "[Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0)",
-      "long-description": "This function provides a Python environment with Pyenv installed. Other versions can be installed with ` + "`" + `pyenv install 3.x.y` + "`" + `. The following versions are installed:\n- 3.10.5\n- 3.9.13\n- 3.8.13\nYou can change the python version by running the command ` + "`" + `pyenv local 3.x.y` + "`" + ` in the working directory. \nThis image is based on the image [cimg/python](https://hub.docker.com/r/cimg/python) from DockerHub. It includes pip, pipenv, and poetry.",
+      "long-description": "This function provides a Python environment with Pyenv installed. Other versions can be installed with ` + "`" + `pyenv install 3.x.y` + "`" + `. The following versions are installed:\n- 3.10.5\n- 3.9.13\n- 3.8.13\n\nYou can change the python version by running the command ` + "`" + `pyenv local 3.x.y` + "`" + ` in the working directory. The image also contains pip, pipenv, and poetry.",
       "maintainer": "[direktiv.io](https://www.direktiv.io) ",
       "url": "https://github.com/direktiv-apps/python"
     }
@@ -316,7 +326,7 @@ func init() {
             "examples": {
               "python": [
                 {
-                  "result": null,
+                  "result": "Python 3.8.13",
                   "success": true
                 }
               ]
@@ -360,6 +370,14 @@ func init() {
           {
             "content": "- id: python\n  type: action\n  action:\n    function: python\n    input: \n      commands:\n      - command: python3 -c 'print(\"Hello World\")'",
             "title": "Basic"
+          },
+          {
+            "content": "- id: python\n  type: action\n  action:\n    function: python\n    input:\n      commands:\n      - command: python3 -c 'import os;print(os.environ[\"hello\"])'\n        envs: \n        - name: hello\n          value: world",
+            "title": "Environment Variables"
+          },
+          {
+            "content": "- id: python\n  type: action\n  action:\n    function: python\n    input:\n      commands:\n      - command: pyenv local 3.8.13\n      - command: python3 -V",
+            "title": "Switch version"
           }
         ],
         "x-direktiv-function": "functions:\n- id: python\n  image: gcr.io/direktiv/apps/python:1.0\n  type: knative-workflow"
