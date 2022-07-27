@@ -1,0 +1,13 @@
+url: ""
+functions:
+- type: knative-workflow
+  id: python
+  image: gcr.io/direktiv/apps/python:test
+states:
+- id: state0
+  type: action
+  action:
+    function: python
+    input:
+      commands:
+      - command: python3 -c 'print("Hello World")'
