@@ -4,7 +4,7 @@ info:
   title: python
   version: "1.0"
   x-direktiv-meta:
-    container: direktiv.azurecr.io/functions/python
+    container: gcr.io/direktiv/functions/python
     maintainer: |-
       [direktiv.io](https://www.direktiv.io) 
     issues: https://github.com/direktiv-apps/python/issues
@@ -113,7 +113,7 @@ paths:
       x-direktiv-function: |-
         functions:
         - id: python
-          image: direktiv.azurecr.io/functions/python:1.0
+          image: gcr.io/direktiv/functions/python:1.0
           type: knative-workflow
       x-direktiv-examples:
         - title: Basic
