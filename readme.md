@@ -5,7 +5,7 @@ Python environment
 
 ---
 - #### Categories: build, development
-- #### Image: direktiv.azurecr.io/functions/python 
+- #### Image: gcr.io/direktiv/functions/python 
 - #### License: [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0)
 - #### Issue Tracking: https://github.com/direktiv-apps/python/issues
 - #### URL: https://github.com/direktiv-apps/python
@@ -26,7 +26,7 @@ You can change the python version by running the command `pyenv local 3.x.y` in 
 ```yaml
 functions:
 - id: python
-  image: direktiv.azurecr.io/functions/python:1.0
+  image: gcr.io/direktiv/functions/python:1.0
   type: knative-workflow
 ```
    #### Basic
