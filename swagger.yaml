@@ -26,6 +26,9 @@ info:
 
 
       You can change the python version by running the command `pyenv local 3.x.y` in the working directory. The image also contains pip, pipenv, and poetry.
+      
+      
+      The environment PYTHONUNBUFFERED is set to `x`
 
 consumes:
 - application/json
@@ -155,6 +158,7 @@ paths:
           silent: '{{ .Item.Silent }}'
           print: '{{ .Item.Print }}'
           continue: '{{ .Item.Continue }}'
+          env: ["PYTHONUNBUFFERED=x"]
           runtime-envs: |
             [
             {{- range $index, $element := .Item.Envs }}

@@ -21,6 +21,8 @@ This function provides a Python environment with Pyenv installed. Other versions
 
 You can change the python version by running the command `pyenv local 3.x.y` in the working directory. The image also contains pip, pipenv, and poetry.
 
+The environment PYTHONUNBUFFERED is set to `x`
+
 ### Example(s)
   #### Function Configuration
 ```yaml

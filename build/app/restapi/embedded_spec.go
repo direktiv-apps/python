@@ -40,7 +40,7 @@ func init() {
       "container": "gcr.io/direktiv/functions/python",
       "issues": "https://github.com/direktiv-apps/python/issues",
       "license": "[Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0)",
-      "long-description": "This function provides a Python environment with Pyenv installed. Other versions can be installed with ` + "`" + `pyenv install 3.x.y` + "`" + `. The following versions are installed:\n- 3.10.5\n- 3.9.13\n- 3.8.13\n\nYou can change the python version by running the command ` + "`" + `pyenv local 3.x.y` + "`" + ` in the working directory. The image also contains pip, pipenv, and poetry.",
+      "long-description": "This function provides a Python environment with Pyenv installed. Other versions can be installed with ` + "`" + `pyenv install 3.x.y` + "`" + `. The following versions are installed:\n- 3.10.5\n- 3.9.13\n- 3.8.13\n\nYou can change the python version by running the command ` + "`" + `pyenv local 3.x.y` + "`" + ` in the working directory. The image also contains pip, pipenv, and poetry.\n\nThe environment PYTHONUNBUFFERED is set to ` + "`" + `x` + "`" + `",
       "maintainer": "[direktiv.io](https://www.direktiv.io) ",
       "url": "https://github.com/direktiv-apps/python"
     }
@@ -186,6 +186,9 @@ func init() {
             {
               "action": "foreach",
               "continue": "{{ .Item.Continue }}",
+              "env": [
+                "PYTHONUNBUFFERED=x"
+              ],
               "exec": "{{ .Item.Command }}",
               "loop": ".Commands",
               "print": "{{ .Item.Print }}",
@@ -286,7 +289,7 @@ func init() {
       "container": "gcr.io/direktiv/functions/python",
       "issues": "https://github.com/direktiv-apps/python/issues",
       "license": "[Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0)",
-      "long-description": "This function provides a Python environment with Pyenv installed. Other versions can be installed with ` + "`" + `pyenv install 3.x.y` + "`" + `. The following versions are installed:\n- 3.10.5\n- 3.9.13\n- 3.8.13\n\nYou can change the python version by running the command ` + "`" + `pyenv local 3.x.y` + "`" + ` in the working directory. The image also contains pip, pipenv, and poetry.",
+      "long-description": "This function provides a Python environment with Pyenv installed. Other versions can be installed with ` + "`" + `pyenv install 3.x.y` + "`" + `. The following versions are installed:\n- 3.10.5\n- 3.9.13\n- 3.8.13\n\nYou can change the python version by running the command ` + "`" + `pyenv local 3.x.y` + "`" + ` in the working directory. The image also contains pip, pipenv, and poetry.\n\nThe environment PYTHONUNBUFFERED is set to ` + "`" + `x` + "`" + `",
       "maintainer": "[direktiv.io](https://www.direktiv.io) ",
       "url": "https://github.com/direktiv-apps/python"
     }
@@ -352,6 +355,9 @@ func init() {
             {
               "action": "foreach",
               "continue": "{{ .Item.Continue }}",
+              "env": [
+                "PYTHONUNBUFFERED=x"
+              ],
               "exec": "{{ .Item.Command }}",
               "loop": ".Commands",
               "print": "{{ .Item.Print }}",

@@ -169,6 +169,8 @@ func runCommand0(ctx context.Context,
 		output := ""
 
 		envs := []string{}
+		env0, _ := templateString(`PYTHONUNBUFFERED=x`, ls)
+		envs = append(envs, env0)
 
 		envTempl, err := templateString(`[
 {{- range $index, $element := .Item.Envs }}
