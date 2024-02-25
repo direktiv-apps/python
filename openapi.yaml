@@ -1,0 +1,201 @@
+openapi: 3.0.1
+info:
+  title: python
+  description: Python environment
+  version: "1.0"
+  x-direktiv-meta:
+    container: gcr.io/direktiv/functions/python
+    maintainer: "[direktiv.io](https://www.direktiv.io) "
+    issues: https://github.com/direktiv-apps/python/issues
+    url: https://github.com/direktiv-apps/python
+    categories:
+    - build
+    - development
+    license: "[Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0)"
+    long-description: |-
+      This function provides a Python environment with Pyenv installed. Other versions can be installed with `pyenv install 3.x.y`. The following versions are installed:
+      - 3.10.5
+      - 3.9.13
+      - 3.8.13
+
+      You can change the python version by running the command `pyenv local 3.x.y` in the working directory. The image also contains pip, pipenv, and poetry.
+
+      The environment PYTHONUNBUFFERED is set to `x`
+servers:
+- url: /
+paths:
+  /:
+    post:
+      parameters:
+      - name: Direktiv-ActionID
+        in: header
+        description: "direktiv action id is an UUID. \nFor development it can be set\
+          \ to 'development'\n"
+        schema:
+          type: string
+          default: development
+      - name: Direktiv-TempDir
+        in: header
+        description: |
+          direktiv temp dir is the working directory for that request
+          For development it can be set to e.g. '/tmp'
+        schema:
+          type: string
+          default: /tmp
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                files:
+                  type: array
+                  description: File to create before running commands.
+                  items:
+                    $ref: '#/components/schemas/direktivFile'
+                commands:
+                  type: array
+                  description: Array of commands.
+                  items:
+                    type: object
+                    properties:
+                      command:
+                        type: string
+                        description: Command to run
+                        example: python3 -c 'print("jens")
+                      silent:
+                        type: boolean
+                        description: If set to false the command will not print output
+                          to logs.
+                        default: false
+                      print:
+                        type: boolean
+                        description: If set to false the command will not print the
+                          full command with arguments to logs.
+                        default: true
+                      continue:
+                        type: boolean
+                        description: "Stops excecution if command fails, otherwise\
+                          \ proceeds with next command"
+                      envs:
+                        type: array
+                        description: Environment variables set for each command.
+                        example:
+                        - name: MYVALUE
+                          value: hello
+                        items:
+                          type: object
+                          properties:
+                            name:
+                              type: string
+                              description: Name of the variable.
+                            value:
+                              type: string
+                              description: Value of the variable.
+        required: false
+      responses:
+        "200":
+          description: List of executed commands.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  python:
+                    type: array
+                    items:
+                      required:
+                      - result
+                      - success
+                      type: object
+                      properties:
+                        success:
+                          type: boolean
+                        result:
+                          type: object
+            python:
+              example:
+              - result: Python 3.8.13
+                success: true
+        default:
+          description: generic error response
+          headers:
+            Direktiv-ErrorMessage:
+              schema:
+                type: string
+            Direktiv-ErrorCode:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+      x-direktiv-function: |-
+        functions:
+        - id: python
+          image: gcr.io/direktiv/functions/python:1.0
+          type: knative-workflow
+      x-direktiv-examples:
+      - title: Basic
+        content: "- id: python\n  type: action\n  action:\n    function: python\n\
+          \    input: \n      commands:\n      - command: python3 -c 'print(\"Hello\
+          \ World\")'"
+      - title: Environment Variables
+        content: "- id: python\n  type: action\n  action:\n    function: python\n\
+          \    input:\n      commands:\n      - command: python3 -c 'import os;print(os.environ[\"\
+          hello\"])'\n        envs: \n        - name: hello\n          value: world"
+      - title: Switch version
+        content: |-
+          - id: python
+            type: action
+            action:
+              function: python
+              input:
+                commands:
+                - command: pyenv local 3.8.13
+                - command: python3 -V
+      x-direktiv:
+        cmds:
+        - action: foreach
+          loop: .Commands
+          exec: "{{ .Item.Command }}"
+          silent: "{{ .Item.Silent }}"
+          print: "{{ .Item.Print }}"
+          continue: "{{ .Item.Continue }}"
+          env:
+          - PYTHONUNBUFFERED=x
+          runtime-envs: |
+            [
+            {{- range $index, $element := .Item.Envs }}
+            {{- if $index}},{{- end}}
+            "{{ $element.Name }}={{ $element.Value }}"
+            {{- end }}
+            ]
+        output: |
+          {
+            "python": {{ index . 0 | toJson }}
+          }
+      x-direktiv-errors:
+        io.direktiv.command.error: Command execution failed
+        io.direktiv.output.error: Template error for output generation of the service
+        io.direktiv.ri.error: Can not create information object from request
+      x-codegen-request-body-name: body
+components:
+  schemas:
+    direktivFile:
+      type: object
+      x-go-type:
+        type: DirektivFile
+        import:
+          package: github.com/direktiv/apps/go/pkg/apps
+    error:
+      required:
+      - errorCode
+      - errorMessage
+      type: object
+      properties:
+        errorCode:
+          type: string
+        errorMessage:
+          type: string
+
